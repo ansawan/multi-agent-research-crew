@@ -8,24 +8,24 @@ A production-ready **CrewAI Multi-Agent System** that turns a research brief int
 
 ```mermaid
 graph TD
-    A[n8n Form Trigger] -->|POST /research with API Key| B[FastAPI Backend Server]
-    B -->|Starts Background Job| C[Research Crew Flow]
-    
-    subgraph CrewAI Multi-Agent Flow
-        C --> D[1. Researcher Agent]
-        D -->|Web Search & Page Reader Tools| E[Raw Research Notes with Source URLs]
-        E --> F[2. Writer Agent]
-        F -->|Drafts Markdown Report| G[Report Draft]
-        G --> H[3. QA Reviewer Agent]
-        H -->|Audit Fact Check & Citations| I{Approved & Score >= 8.0?}
-        I -->|No / Max 2 Rounds| F
-        I -->|Yes| J[Final Report + QA Notes Footer]
+    A["n8n Form Trigger"] -->|"POST /research with API Key"| B["FastAPI Backend Server"]
+    B -->|"Starts Background Job"| C["Research Crew Flow"]
+
+    subgraph crew["CrewAI Multi-Agent Flow"]
+        C --> D["1 - Researcher Agent"]
+        D -->|"Web Search and Page Reader Tools"| E["Raw Research Notes with Source URLs"]
+        E --> F["2 - Writer Agent"]
+        F -->|"Drafts Markdown Report"| G["Report Draft"]
+        G --> H["3 - QA Reviewer Agent"]
+        H -->|"Fact Check and Citations Audit"| I{"Approved and Score >= 8.0?"}
+        I -->|"No - max 2 rounds"| F
+        I -->|"Yes"| J["Final Report + QA Notes Footer"]
     end
 
-    J -->|Saves Report| K[/reports/YYYY-MM-DD-slug.md]
-    J -->|Webhook POST| L[n8n Report Delivery Webhook]
-    L --> M[Gmail Node - Sends Styled HTML Email]
-    L --> N[Google Docs Node - Creates Formatted Doc]
+    J -->|"Saves Report"| K["reports/YYYY-MM-DD-slug.md"]
+    J -->|"Webhook POST"| L["n8n Report Delivery Webhook"]
+    L --> M["Gmail Node - Sends Styled HTML Email"]
+    L --> N["Google Docs Node - Creates Formatted Doc"]
 ```
 
 ---
@@ -56,8 +56,9 @@ graph TD
 
 ### 1. Clone & Setup Virtual Environment
 ```powershell
-# Navigate to directory
-cd "d:\Projects\Multi-Agent Research & Report Crew"
+# Clone the repository
+git clone https://github.com/ansawan/multi-agent-research-crew.git
+cd multi-agent-research-crew
 
 # Create virtual environment
 python -m venv venv
@@ -79,7 +80,7 @@ copy .env.example .env
 ```
 Open `.env` and fill in your keys:
 - **`GEMINI_API_KEY`**: Obtain from [Google AI Studio](https://aistudio.google.com/apikey). *(Required)*
-- **`API_KEY`**: Secret key for protecting API endpoints (e.g. `crew-secret-key-123`). *(Required)*
+- **`API_KEY`**: Secret key for protecting API endpoints (use a long random string). *(Required)*
 - **`TAVILY_API_KEY`**: Optional search key from [Tavily](https://tavily.com). If left blank, falls back to free DuckDuckGo search.
 - **`N8N_DELIVERY_WEBHOOK_URL`**: Webhook URL from n8n (e.g. `http://localhost:5678/webhook/report-delivery`).
 
@@ -117,17 +118,10 @@ Import the JSON files located in `/n8n`:
 1. **`n8n/research_request_workflow.json`**: Creates an n8n Form trigger for submitting research requests.
 2. **`n8n/report_delivery_workflow.json`**: Receives completed reports from the backend and delivers them via **Gmail** and **Google Docs**.
 
-*See [n8n/README.md](file:///d:/Projects/Multi-Agent%20Research%20&%20Report%20Crew/n8n/README.md) for step-by-step setup instructions.*
+*See [n8n/README.md](n8n/README.md) for step-by-step setup instructions.*
 
 ---
 
-## 📸 Screenshots & Sample Output
+## 📄 Sample Output
 
-### n8n Form Trigger Interface
-![n8n Form Trigger Placeholder](https://via.placeholder.com/800x400.png?text=n8n+Form+Trigger+Interface+Placeholder)
-
-### Email Delivery (Gmail)
-![Email Delivery Placeholder](https://via.placeholder.com/800x400.png?text=Gmail+Report+Delivery+Placeholder)
-
-### Sample Output Report
-A full real sample report is available at [`examples/sample_report.md`](file:///d:/Projects/Multi-Agent%20Research%20&%20Report%20Crew/examples/sample_report.md).
+A full real sample report is available at [`examples/sample_report.md`](examples/sample_report.md).

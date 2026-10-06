@@ -43,7 +43,17 @@ def verify_api_key(
     provided_key = x_api_key or api_key_header
     expected_key = config.API_KEY.strip()
 
-    if expected_key and provided_key != expected_key:
+    if not expected_key:
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "error": "Server Misconfigured",
+                "message_en": "API_KEY is not set on the server. Add API_KEY to your .env file.",
+                "message_ur": "Server par API_KEY set nahi hai. Kripya .env file mein API_KEY add karen."
+            }
+        )
+
+    if provided_key != expected_key:
         raise HTTPException(
             status_code=401,
             detail={

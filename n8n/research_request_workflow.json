@@ -75,7 +75,7 @@
           "parameters": [
             {
               "name": "X-API-Key",
-              "value": "crew-secret-key-123"
+              "value": "your_secret_api_key_here"
             },
             {
               "name": "Content-Type",

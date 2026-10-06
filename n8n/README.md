@@ -8,7 +8,7 @@ This directory contains two pre-configured, importable n8n workflows designed to
 
 1. **`research_request_workflow.json`**:
    - **Trigger**: n8n Form Trigger with interactive fields (Topic, Report Type, Questions, Audience, Depth, Email).
-   - **Action**: Sends HTTP POST request to FastAPI (`http://localhost:8000/research`) with `X-API-Key`.
+   - **Action**: Sends HTTP POST request to FastAPI (`http://localhost:8000/research`) with `X-API-Key` (replace `your_secret_api_key_here` in the node with the `API_KEY` from your `.env`).
    - **Response**: Displays immediate user confirmation on form submit.
 
 2. **`report_delivery_workflow.json`**:
