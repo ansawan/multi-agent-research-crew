@@ -1,0 +1,79 @@
+{
+  "name": "Report Delivery - Email & Google Docs",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "report-delivery",
+        "options": {}
+      },
+      "id": "webhook-trigger-node-101",
+      "name": "Report Delivery Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "report-delivery"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.body.email }}",
+        "subject": "=📊 Finished Research Report: {{ $json.body.topic }}",
+        "message": "={{ $json.body.report_html }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "gmail-send-node-102",
+      "name": "Gmail - Send HTML Report",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [520, 200],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_GMAIL_CREDENTIAL_ID",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "title": "=Research Report: {{ $json.body.topic }}",
+        "content": "={{ $json.body.report_markdown }}"
+      },
+      "id": "gdocs-create-node-103",
+      "name": "Google Docs - Create Document (Optional)",
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 1,
+      "position": [520, 400],
+      "credentials": {
+        "googleDocsOAuth2": {
+          "id": "YOUR_GDOCS_CREDENTIAL_ID",
+          "name": "Google Docs account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Report Delivery Webhook": {
+      "main": [
+        [
+          {
+            "node": "Gmail - Send HTML Report",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Docs - Create Document (Optional)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

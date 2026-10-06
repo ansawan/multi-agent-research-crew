@@ -1,0 +1,115 @@
+{
+  "name": "Research Request - Form Trigger",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Multi-Agent Research & Report Crew",
+        "formDescription": "Submit a research brief. Three AI agents (Researcher, Writer, QA) will generate a source-backed research report.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Research Topic / Brief",
+              "fieldType": "string",
+              "requiredField": true,
+              "placeholder": "e.g., AI chatbots for dental clinics in Pakistan"
+            },
+            {
+              "fieldLabel": "Report Type",
+              "fieldType": "dropdown",
+              "requiredField": true,
+              "fieldOptions": {
+                "values": [
+                  { "optionName": "Market research", "optionValue": "Market research" },
+                  { "optionName": "Competitor analysis", "optionValue": "Competitor analysis" },
+                  { "optionName": "Industry trends", "optionValue": "Industry trends" },
+                  { "optionName": "Custom", "optionValue": "Custom" }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Specific Questions (Optional)",
+              "fieldType": "string",
+              "placeholder": "e.g., What are top software providers, costs, and adoption rates?"
+            },
+            {
+              "fieldLabel": "Target Audience",
+              "fieldType": "string",
+              "placeholder": "e.g., Dentists & Clinic Owners"
+            },
+            {
+              "fieldLabel": "Depth",
+              "fieldType": "dropdown",
+              "requiredField": true,
+              "fieldOptions": {
+                "values": [
+                  { "optionName": "Quick ~2 pages", "optionValue": "Quick ~2 pages" },
+                  { "optionName": "Detailed ~5 pages", "optionValue": "Detailed ~5 pages" }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Delivery Email",
+              "fieldType": "string",
+              "requiredField": true,
+              "placeholder": "e.g., yourname@example.com"
+            }
+          ]
+        },
+        "options": {
+          "respondWith": "text",
+          "responseText": "✅ Your research brief has been submitted! Our AI crew is currently researching and writing your report. You will receive the full report at your email address shortly."
+        }
+      },
+      "id": "form-trigger-node-001",
+      "name": "n8n Form Trigger",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8000/research",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "crew-secret-key-123"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"topic\": \"{{ $json['Research Topic / Brief'] }}\",\n  \"report_type\": \"{{ $json['Report Type'] }}\",\n  \"specific_questions\": \"{{ $json['Specific Questions (Optional)'] }}\",\n  \"audience\": \"{{ $json['Target Audience'] }}\",\n  \"depth\": \"{{ $json['Depth'] }}\",\n  \"delivery_email\": \"{{ $json['Delivery Email'] }}\"\n}",
+        "options": {}
+      },
+      "id": "http-request-node-002",
+      "name": "POST to FastAPI /research",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [500, 300]
+    }
+  ],
+  "connections": {
+    "n8n Form Trigger": {
+      "main": [
+        [
+          {
+            "node": "POST to FastAPI /research",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
