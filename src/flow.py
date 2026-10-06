@@ -1,7 +1,8 @@
 import re
 import json
-from typing import Dict, Any, Tuple, List, Callable, Optional
-from crewai import Agent, Task, Crew, Process
+import html
+from typing import Tuple, List, Callable, Optional
+from crewai import Task, Crew, Process
 import markdown
 from rich.console import Console
 
@@ -30,7 +31,7 @@ def markdown_to_styled_html(md_content: str, topic: str) -> str:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{topic} - Research Report</title>
+    <title>{html.escape(topic)} - Research Report</title>
     <style>
         body {{
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -161,23 +162,24 @@ def parse_qa_response(raw_response: str) -> QAResults:
     
     try:
         data = json.loads(raw_clean)
+        score = min(max(float(data.get("score", 0.0)), 0.0), 10.0)
         return QAResults(
-            approved=bool(data.get("approved", True)),
-            score=float(data.get("score", 8.5)),
+            approved=bool(data["approved"]) if "approved" in data else score >= 8.0,
+            score=score,
             issues=data.get("issues", []),
             required_fixes=data.get("required_fixes", [])
         )
     except Exception:
         # Fallback parsing heuristics if not strict JSON
-        score = 8.0
+        score = 0.0
         score_match = re.search(r'score[:\s]*([0-9]+(?:\.[0-9]+)?)', raw_clean, re.IGNORECASE)
         if score_match:
             try:
-                score = float(score_match.group(1))
+                score = min(max(float(score_match.group(1)), 0.0), 10.0)
             except ValueError:
                 pass
         
-        approved = "approved: true" in raw_clean.lower() or "status: approved" in raw_clean.lower() or score >= 7.0
+        approved = "approved: true" in raw_clean.lower() or "status: approved" in raw_clean.lower() or score >= 8.0
         
         return QAResults(
             approved=approved,

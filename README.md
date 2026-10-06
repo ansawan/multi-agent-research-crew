@@ -124,4 +124,4 @@ Import the JSON files located in `/n8n`:
 
 ## 📄 Sample Output
 
-A full real sample report is available at [`examples/sample_report.md`](examples/sample_report.md).
+An **illustrative** sample report (mock data and placeholder sources, showing the output format) is available at [`examples/sample_report.md`](examples/sample_report.md).

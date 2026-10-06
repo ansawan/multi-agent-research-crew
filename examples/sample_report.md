@@ -1,3 +1,5 @@
+> **Note:** This is an illustrative sample that shows the report format. Figures, companies and sources are placeholders, not real research output.
+
 # Executive Research Report: AI Chatbots for Dental Clinics in Pakistan
 
 ## Executive Summary

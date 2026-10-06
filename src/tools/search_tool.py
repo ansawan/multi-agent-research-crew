@@ -39,7 +39,10 @@ class WebSearchTool(BaseTool):
 
         # 2. Fallback to DuckDuckGo Search
         try:
-            from duckduckgo_search import DDGS
+            try:
+                from ddgs import DDGS
+            except ImportError:
+                from duckduckgo_search import DDGS
             with DDGS() as ddgs:
                 ddg_results = list(ddgs.text(query, max_results=6))
             if ddg_results:

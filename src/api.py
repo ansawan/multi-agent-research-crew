@@ -4,7 +4,7 @@ import datetime
 import re
 import asyncio
 from typing import Dict, Any
-from fastapi import FastAPI, HTTPException, Security, Header, BackgroundTasks, Depends
+from fastapi import FastAPI, HTTPException, Header, BackgroundTasks, Depends
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import httpx
@@ -25,7 +25,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )

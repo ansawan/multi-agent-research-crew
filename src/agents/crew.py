@@ -1,13 +1,10 @@
-import os
 import time
-from typing import Dict, Any, Tuple
-from crewai import Agent, Task, Crew, Process, LLM
+from crewai import Agent, LLM
 from rich.console import Console
 
 from src import config
 from src.tools.search_tool import WebSearchTool
 from src.tools.reader_tool import PageReaderTool
-from src.models import QAResults
 
 console = Console()
 
