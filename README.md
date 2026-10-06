@@ -123,7 +123,7 @@ Open `.env` and fill in your keys:
 The test suite covers QA verdict parsing, source extraction, HTML rendering, and API authentication and job flow. It does not call Gemini or the web, so no API keys are needed.
 
 ```powershell
-.env\Scripts\python.exe -m pytest -q
+.envScriptspython.exe -m pytest -q
 ```
 
 Tests also run automatically on every push via GitHub Actions.
