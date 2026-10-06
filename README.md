@@ -1,5 +1,11 @@
 # 🤖 Multi-Agent Research & Report Crew
 
+[![Tests](https://github.com/ansawan/multi-agent-research-crew/actions/workflows/tests.yml/badge.svg)](https://github.com/ansawan/multi-agent-research-crew/actions/workflows/tests.yml)
+![Python](https://img.shields.io/badge/python-3.10%E2%80%933.13-blue)
+![CrewAI](https://img.shields.io/badge/CrewAI-multi--agent-orange)
+![FastAPI](https://img.shields.io/badge/FastAPI-REST-009688)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
 A production-ready **CrewAI Multi-Agent System** that turns a research brief into a comprehensive, source-backed executive report. Triggered seamlessly from an **n8n Form**, orchestrated by three specialized AI agents powered by **Google Gemini**, and delivered directly to your inbox via **Gmail** and **Google Docs**.
 
 ---
@@ -112,6 +118,18 @@ Open `.env` and fill in your keys:
 
 ---
 
+## 🧪 Running Tests
+
+The test suite covers QA verdict parsing, source extraction, HTML rendering, and API authentication and job flow. It does not call Gemini or the web, so no API keys are needed.
+
+```powershell
+.env\Scripts\python.exe -m pytest -q
+```
+
+Tests also run automatically on every push via GitHub Actions.
+
+---
+
 ## 🔗 n8n Workflow Integration
 
 Import the JSON files located in `/n8n`:
@@ -125,3 +143,9 @@ Import the JSON files located in `/n8n`:
 ## 📄 Sample Output
 
 An **illustrative** sample report (mock data and placeholder sources, showing the output format) is available at [`examples/sample_report.md`](examples/sample_report.md).
+
+---
+
+## 📜 License
+
+Released under the [MIT License](LICENSE).
